@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to the Indian Economy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Introduction to the Indian Economy</h1>
+            <p class="subtitle">Explore the core characteristics, challenges, and strengths of one of the world's fastest-growing economies</p>
+        </header>
+        
+        <div class="controls">
+            <button id="play-all">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                Listen to All Content
+            </button>
+            <button id="pause">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+                Pause
+            </button>
+            <button id="resume">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                Resume
+            </button>
+            <button id="stop">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 6h12v12H6z"/>
+                </svg>
+                Stop
+            </button>
+        </div>
+        
+        <div class="content-section" id="introduction">
+            <h2>Introduction to the Indian Economy</h2>
+            <p>The Indian economy is a <span class="highlight">mixed, developing, and structurally diverse</span> system that combines modern industries with traditional sectors. It operates through a blend of market-driven mechanisms and state intervention, which often creates both opportunities and bottlenecks.</p>
+            <div class="section-controls">
+                <button data-section="introduction">Listen to this section</button>
+            </div>
+        </div>
+        
+        <div class="content-section" id="core-characteristics">
+            <h2>Core Characteristics</h2>
+            
+            <h3>1. Mixed Economic System</h3>
+            <p>India retains private enterprise as a growth engine while the government holds a major role in regulation, welfare delivery, infrastructure, and strategic sectors. This dual structure creates flexibility but also leads to bureaucratic friction.</p>
+            
+            <h3>2. Demographic Weight</h3>
+            <p>With one of the world's largest and youngest populations, India holds a potential demographic dividend. But this advantage is meaningless without matching job creation, skill development, and productivity growth.</p>
+            
+            <h3>3. Sectoral Composition</h3>
+            <p><strong>Agriculture</strong> still employs a disproportionately large workforce despite contributing a relatively smaller share to GDP. Structural issues persist: low productivity, monsoon dependency, fragmented landholdings.</p>
+            <p><strong>Industry</strong> grows slower than it should due to regulatory complexity, infrastructure gaps, and unpredictable policy environments.</p>
+            <p><strong>Services</strong> dominate GDP, from IT to financial services, but this high growth doesn't translate into mass job creation.</p>
+            
+            <h3>4. Growth Pattern</h3>
+            <p>India is one of the fastest-growing major economies, but growth is uneven. Booms in services and consumption often mask weaknesses in manufacturing, labor markets, and export competitiveness.</p>
+            
+            <div class="section-controls">
+                <button data-section="core-characteristics">Listen to this section</button>
+            </div>
+        </div>
+        
+        <div class="content-section" id="key-challenges">
+            <h2>Key Challenges</h2>
+            <ul>
+                <li>Jobless or low-quality job growth</li>
+                <li>Low manufacturing share compared to global benchmarks</li>
+                <li>Income inequality and rural distress</li>
+                <li>Infrastructure deficits</li>
+                <li>Dependence on imports for critical goods like crude oil</li>
+                <li>Slow judicial and regulatory processes that discourage investment</li>
+            </ul>
+            <div class="section-controls">
+                <button data-section="key-challenges">Listen to this section</button>
+            </div>
+        </div>
+        
+        <div class="content-section" id="key-strengths">
+            <h2>Key Strengths</h2>
+            <ul>
+                <li>Strong entrepreneurial ecosystem</li>
+                <li>Global dominance in IT and digital services</li>
+                <li>Large domestic market</li>
+                <li>Rapid digitalization (UPI, Aadhaar, etc.)</li>
+                <li>Improving infrastructure in transport and energy</li>
+            </ul>
+            <div class="section-controls">
+                <button data-section="key-strengths">Listen to this section</button>
+            </div>
+        </div>
+        
+        <div class="content-section" id="conclusion">
+            <h2>Conclusion</h2>
+            <p>The Indian economy is a potential heavyweight but still struggles with foundational issues that hold back inclusive and sustainable growth. The direction is upward, but the pace is slowed by structural challenges that require consistent, long-term reforms rather than headline-driven quick fixes.</p>
+            <div class="section-controls">
+                <button data-section="conclusion">Listen to this section</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Interactive Learning Tool - Introduction to the Indian Economy</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const speechSynthesis = window.speechSynthesis;
+            let currentUtterance = null;
+            let isPaused = false;
+            
+            // Get all text content from a section
+            function getSectionText(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (!section) return '';
+                
+                // Clone the section to avoid modifying the original
+                const clone = section.cloneNode(true);
+                
+                // Remove buttons from the clone
+                const buttons = clone.querySelectorAll('button');
+                buttons.forEach(button => button.remove());
+                
+                return clone.textContent.trim();
+            }
+            
+            // Speak text
+            function speakText(text, sectionId) {
+                if (speechSynthesis.speaking && !isPaused) {
+                    speechSynthesis.cancel();
+                }
+                
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                
+                // Highlight the section being spoken
+                if (sectionId) {
+                    const section = document.getElementById(sectionId);
+                    section.classList.add('speaking');
+                    
+                    currentUtterance.onend = function() {
+                        section.classList.remove('speaking');
+                    };
+                }
+                
+                speechSynthesis.speak(currentUtterance);
+                isPaused = false;
+            }
+            
+            // Play all content
+            document.getElementById('play-all').addEventListener('click', function() {
+                const sections = [
+                    'introduction',
+                    'core-characteristics',
+                    'key-challenges',
+                    'key-strengths',
+                    'conclusion'
+                ];
+                
+                let fullText = '';
+                sections.forEach(sectionId => {
+                    fullText += getSectionText(sectionId) + ' ';
+                });
+                
+                speakText(fullText);
+            });
+            
+            // Pause speech
+            document.getElementById('pause').addEventListener('click', function() {
+                if (speechSynthesis.speaking && !isPaused) {
+                    speechSynthesis.pause();
+                    isPaused = true;
+                }
+            });
+            
+            // Resume speech
+            document.getElementById('resume').addEventListener('click', function() {
+                if (isPaused) {
+                    speechSynthesis.resume();
+                    isPaused = false;
+                }
+            });
+            
+            // Stop speech
+            document.getElementById('stop').addEventListener('click', function() {
+                speechSynthesis.cancel();
+                isPaused = false;
+                
+                // Remove speaking highlights
+                document.querySelectorAll('.speaking').forEach(el => {
+                    el.classList.remove('speaking');
+                });
+            });
+            
+            // Section-specific buttons
+            document.querySelectorAll('.section-controls button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    const text = getSectionText(sectionId);
+                    speakText(text, sectionId);
+                });
+            });
+            
+            // Disable buttons when not supported
+            if (!speechSynthesis) {
+                document.querySelectorAll('button').forEach(button => {
+                    button.disabled = true;
+                });
+                alert('Your browser does not support text-to-speech functionality.');
+            }
+        });
+    </script>
+</body>
+</html>
